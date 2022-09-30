@@ -128,6 +128,8 @@ void EventHIVSeed::fire(Algorithm *pAlgorithm, State *pState, double t)
 
 	assert(numChronic + numAids + numFinalAids <= countSeeded);
 
+	vector<string> advancedStageNames; // Keep track of the people who have been selected to immediately move to advanced disease stage
+
 	while (numChronic > 0 || numAids > 0 || numFinalAids > 0) {
 		// Pick random seeder
 		int poolSize = (int)seeded.size();
@@ -136,39 +138,46 @@ void EventHIVSeed::fire(Algorithm *pAlgorithm, State *pState, double t)
 		assert(seedIdx >= 0 && seedIdx < poolSize);
 
 		Person *pPerson = seeded[seedIdx];
-		// Check if person still in acute stage
-		if (pPerson->hiv().getInfectionStage() == Person_HIV::InfectionStage::Acute) {
-
+		// Check if person has already been selected to advance disease state
+		if(std::find(advancedStageNames.begin(), advancedStageNames.end(), pPerson->getName()) == advancedStageNames.end()) {
 			if (numChronic > 0) {
-				EventChronicStage *pEvt = new EventChronicStage(pPerson);
-				pEvt->fire(pAlgorithm, pState, t);
+				EventChronicStage *pEvt = new EventChronicStage(pPerson, true); // Schedule immediately
+				population.onNewEvent(pEvt);
+
+				advancedStageNames.push_back(pPerson->getName());
 
 				numChronic--;
 			} else if (numAids > 0) {
-				EventAIDSStage *pEvt = new EventAIDSStage(pPerson, false);
-				pEvt->fire(pAlgorithm, pState, t);
-				numAids --;
+				EventAIDSStage *pEvt = new EventAIDSStage(pPerson, false, true); // Schedule immediately
+				population.onNewEvent(pEvt);
+
+				advancedStageNames.push_back(pPerson->getName());
+
+				numAids--;
 			} else if (numFinalAids > 0) {
-				EventAIDSStage *pEvt = new EventAIDSStage(pPerson, true);
-				pEvt->fire(pAlgorithm, pState, t);
+				EventAIDSStage *pEvt = new EventAIDSStage(pPerson, true, true); // Schedule immediately
+				population.onNewEvent(pEvt);
+
+				advancedStageNames.push_back(pPerson->getName());
+
 				numFinalAids--;
-				// FIXME: It seems deaths are not correctly re-calculated here?
 			}
 		}
-
 	}
 
-	// Schedule chronic stage event for all those still in acute stage
+	/// Schedule chronic stage event for all those still in acute stage
 	for (int i = 0; i < seeded.size(); i++) {
 		Person *pPerson = seeded[i];
-		if (pPerson->hiv().getInfectionStage() == Person_HIV::InfectionStage::Acute) {
+		if(std::find(advancedStageNames.begin(), advancedStageNames.end(), pPerson->getName()) == advancedStageNames.end()) {
 			EventChronicStage *pEvt = new EventChronicStage(pPerson);
 			population.onNewEvent(pEvt);
 		}
 	}
 
+	vector<string> diagnosedNames; // Keep track of the people who have been selected be diagnosed immediately
+	// Select seeded individuals to be diagnosed immediately
 	assert(numDiagnosed <= countSeeded);
-	while (numDiagnosed > 0) {
+	while(numDiagnosed > 0) {
 		// Pick random seeder
 		int poolSize = (int)seeded.size();
 		int seedIdx = (int)((double)poolSize * pRngGen->pickRandomDouble());
@@ -176,10 +185,11 @@ void EventHIVSeed::fire(Algorithm *pAlgorithm, State *pState, double t)
 		assert(seedIdx >= 0 && seedIdx < poolSize);
 		Person *pPerson = seeded[seedIdx];
 
-		// Check that person has not yet been diagnosed
-		if (!pPerson->hiv().isDiagnosed()) {
-			EventHIVTest *pEvt = new EventHIVTest(pPerson);
-			pEvt->fire(pAlgorithm, pState, t);
+		// Check that person is not yet scheduled to be diagnosed
+		if (std::find(diagnosedNames.begin(), diagnosedNames.end(), pPerson->getName()) == diagnosedNames.end()) {
+			EventHIVTest *pEvt = new EventHIVTest(pPerson, true); // Schedule immediately
+			population.onNewEvent(pEvt);
+
 			numDiagnosed--;
 		}
 	}
@@ -195,7 +205,6 @@ void EventHIVSeed::fire(Algorithm *pAlgorithm, State *pState, double t)
 
 	if (!s_settings.m_useFraction && s_settings.m_stopOnShort && countSeeded != s_settings.m_seedAmount)
 		abortWithMessage(strprintf("Could not HSV2 seed the requested amount of people: %d were seeded, but %d requested", countSeeded, s_settings.m_seedAmount));
-
 }
 
 HIVSeedEventSettings EventHIVSeed::s_settings;

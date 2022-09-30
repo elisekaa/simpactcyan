@@ -60,6 +60,7 @@ public:
 	double getLastCD4CountAtARTStart() const										{ assert(isInfected()); assert(m_VspLowered); return m_lastCD4AtTreatmentStart; }
 
 	double getARTAcceptanceThreshold() const										{ return m_artAcceptanceThreshold; }
+	double getPrePAcceptanceThreshold() const										{ return m_prepAcceptanceThreshold; }
 
 	void markAIDSDeath()															{ /*assert(hasDied());*/ m_aidsDeath = true; }
 	bool wasAIDSDeath() const														{ /*assert(hasDied());*/ return m_aidsDeath; }
@@ -105,6 +106,7 @@ private:
 	double m_lastCD4AtTreatmentStart;
 	double m_artAcceptanceThreshold;
 
+	double m_prepAcceptanceThreshold;
 	bool m_isOnPreP;
 
 	static double m_hivSeedWeibullShape;
@@ -120,6 +122,7 @@ private:
 	static ProbabilityDistribution *m_pCD4StartDistribution;
 	static ProbabilityDistribution *m_pCD4EndDistribution;
 	static ProbabilityDistribution *m_pARTAcceptDistribution;
+	static ProbabilityDistribution *m_pPrePAcceptDistribution;
 	static ProbabilityDistribution *m_pLogSurvTimeOffsetDistribution;
 	static ProbabilityDistribution *m_pB0Dist;
 	static ProbabilityDistribution *m_pB1Dist;
@@ -143,21 +146,21 @@ inline double Person_HIV::getViralLoad() const
 
 inline void Person_HIV::setInChronicStage(double tNow)
 { 
-	assert(m_infectionStage == Acute); 
+	//assert(m_infectionStage == Acute);
 	m_infectionStage = Chronic; 
 	writeToViralLoadLog(tNow, "Chronic stage"); 
 }
 
 inline void Person_HIV::setInAIDSStage(double tNow)
 { 
-	assert(m_infectionStage == Chronic); 
+	//assert(m_infectionStage == Chronic);
 	m_infectionStage = AIDS; 
 	writeToViralLoadLog(tNow, "AIDS stage"); 
 }
 
 inline void Person_HIV::setInFinalAIDSStage(double tNow)
 { 
-	assert(m_infectionStage == AIDS); 
+	//assert(m_infectionStage == AIDS);
 	m_infectionStage = AIDSFinal; 
 	writeToViralLoadLog(tNow, "Final AIDS stage");
 }

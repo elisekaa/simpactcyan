@@ -1,12 +1,12 @@
 #include "eventdebut.h"
 #include "eventformation.h"
 #include "eventhivtest.h"
-#include "eventprepstart.h"
 #include "gslrandomnumbergenerator.h"
 #include "jsonconfig.h"
 #include "configfunctions.h"
 #include "util.h"
 #include <iostream>
+#include "eventprepoffered.h"
 
 EventDebut::EventDebut(Person *pPerson) : SimpactEvent(pPerson)
 {
@@ -58,13 +58,13 @@ void EventDebut::fire(Algorithm *pAlgorithm, State *pState, double t)
 	if (pPerson->hiv().getInfectionStage() != Person_HIV::AIDSFinal)
 		population.initializeFormationEvents(pPerson, false, false, t);
 
-	if (!pPerson->hiv().isInfected()) {
-		EventPrePStart *pEvt = new EventPrePStart(pPerson);
+	if (!pPerson->hiv().isDiagnosed()) {
+		EventPrePOffered *pEvt = new EventPrePOffered(pPerson);
 		population.onNewEvent(pEvt);
-	}
 
-	EventHIVTest *pEvtTest = new EventHIVTest(pPerson);
-	population.onNewEvent(pEvtTest);
+		EventHIVTest *pEvtTest = new EventHIVTest(pPerson);
+		population.onNewEvent(pEvtTest);
+	}
 }
 
 double EventDebut::m_debutAge = -1;

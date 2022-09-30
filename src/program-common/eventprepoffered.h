@@ -1,5 +1,5 @@
-#ifndef EVENTPREPSTART_H
-#define EVENTPREPSTART_H
+#ifndef EVENTPREPOFFERED_H
+#define EVENTPREPOFFERED_H
 
 #include "simpactevent.h"
 #include "hazardfunctionexp.h"
@@ -7,10 +7,10 @@
 class ConfigSettings;
 class ConfigWriter;
 
-class EventPrePStart : public SimpactEvent {
+class EventPrePOffered : public SimpactEvent {
 public:
-	EventPrePStart(Person *pPerson);
-	~EventPrePStart();
+	EventPrePOffered(Person *pPerson);
+	~EventPrePOffered();
 
 	std::string getDescription(double tNow) const;
 	void writeLogs(const SimpactPopulation &pop, double tNow) const;
@@ -29,19 +29,20 @@ private:
 	// TODO age factor?
 	// TODO genderfactor / msm factor?
 	// TODO health seeking propensity factor
-	// TODO (diagnosed) partners factor
+	static double s_diagpartnersfactor;
 	static double s_beta;
 	static double s_tMax;
 };
 
-class HazardFunctionPrePStart : public HazardFunctionExp
+class HazardFunctionPrePOffered : public HazardFunctionExp
 {
 public:
-	HazardFunctionPrePStart(Person *pPerson, double baseline, double beta);
+	HazardFunctionPrePOffered(Person *pPerson, double baseline, double diagpartnersfactor, double beta);
 private:
 	Person *m_pPerson;
 	const double m_baseline;
+	const double m_diagpartnersfactor;
 	const double m_beta;
 };
 
-#endif // EVENTPREPSTART_H
+#endif // EVENTPREPOFFERED_H
