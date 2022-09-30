@@ -2,7 +2,6 @@
 #include "eventaidsmortality.h"
 #include "eventhivtransmission.h"
 #include "eventchronicstage.h"
-#include "eventdiagnosis.h"
 #include "eventaidsstage.h"
 #include "gslrandomnumbergenerator.h"
 #include "jsonconfig.h"
@@ -10,6 +9,8 @@
 #include "util.h"
 #include <iostream>
 #include <cmath>
+
+#include "eventhivtest.h"
 
 using namespace std;
 
@@ -177,20 +178,20 @@ void EventHIVSeed::fire(Algorithm *pAlgorithm, State *pState, double t)
 
 		// Check that person has not yet been diagnosed
 		if (!pPerson->hiv().isDiagnosed()) {
-			EventDiagnosis *pEvt = new EventDiagnosis(pPerson);
+			EventHIVTest *pEvt = new EventHIVTest(pPerson);
 			pEvt->fire(pAlgorithm, pState, t);
 			numDiagnosed--;
 		}
 	}
 
 	// Schedule diagnosis event for all those undiagnosed
-	for (int i = 0; i < seeded.size(); i++) {
-		Person *pPerson = seeded[i];
-		if (!pPerson->hiv().isDiagnosed()) {
-			EventDiagnosis *pEvt = new EventDiagnosis(pPerson);
-			population.onNewEvent(pEvt);
-		}
-	}
+	//for (int i = 0; i < seeded.size(); i++) {
+	//	Person *pPerson = seeded[i];
+	//	if (!pPerson->hiv().isDiagnosed()) {
+	//		EventDiagnosis *pEvt = new EventDiagnosis(pPerson);
+	//		population.onNewEvent(pEvt);
+	//	}
+	//}
 
 	if (!s_settings.m_useFraction && s_settings.m_stopOnShort && countSeeded != s_settings.m_seedAmount)
 		abortWithMessage(strprintf("Could not HSV2 seed the requested amount of people: %d were seeded, but %d requested", countSeeded, s_settings.m_seedAmount));

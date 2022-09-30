@@ -6,6 +6,7 @@
 #include "eventchronicstage.h"
 #include "eventgonorrheaseed.h"
 #include "eventhivseed.h"
+#include "eventhivtest.h"
 #include "eventhsv2seed.h"
 #include "eventintervention.h"
 #include "eventperiodiclogging.h"
@@ -200,6 +201,9 @@ bool_t SimpactPopulation::scheduleInitialEvents()
 			{
 				EventPrePStart *pEvt = new EventPrePStart(pPerson);
 				onNewEvent(pEvt);
+
+				EventHIVTest *pEvtTest = new EventHIVTest(pPerson);
+				onNewEvent(pEvtTest);
 			}
 		}
 	}

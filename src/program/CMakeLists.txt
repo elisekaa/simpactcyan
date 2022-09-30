@@ -36,7 +36,7 @@ set(SOURCES_SIMPACT
 	../program-common/eventaidsstage.cpp
 	../program-common/eventconception.cpp
 	../program-common/eventbirth.cpp
-	../program-common/eventdiagnosis.cpp
+	../program-common/eventhivtest.cpp
 	../program-common/eventmonitoring.cpp
 	../program-common/eventdropout.cpp
 	../program-common/eventperiodiclogging.cpp

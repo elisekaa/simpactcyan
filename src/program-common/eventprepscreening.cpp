@@ -4,7 +4,7 @@
 #include "configfunctions.h"
 #include "configsettings.h"
 #include "configwriter.h"
-#include "eventdiagnosis.h"
+#include "eventhivtest.h"
 #include "gslrandomnumbergenerator.h"
 #include "jsonconfig.h"
 #include "probabilitydistribution.h"
@@ -31,10 +31,10 @@ void EventPrePScreening::fire(Algorithm *pAlgorithm, State *pState, double t)
 	SimpactPopulation &population = SIMPACTPOPULATION(pState);
 	Person *pPerson = getPerson(0);
 
-	// if HIV infected, and not yet diagnosed, immediately schedule diagnosis
-	if (pPerson->hiv().isInfected() && (!pPerson->hiv().isDiagnosed())) {
-		EventDiagnosis *pEvtDiagnosis = new EventDiagnosis(pPerson, true);
-		population.onNewEvent(pEvtDiagnosis);
+	// Immediately schedule test if not yet diagnosed
+	if (!pPerson->hiv().isDiagnosed()) {
+		EventHIVTest *pEvt = new EventHIVTest(pPerson, true);
+		population.onNewEvent(pEvt);
 	}
 
 	// TODO if STI infected, immediately schedule treatment

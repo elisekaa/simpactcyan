@@ -1,5 +1,6 @@
 #include "eventdebut.h"
 #include "eventformation.h"
+#include "eventhivtest.h"
 #include "eventprepstart.h"
 #include "gslrandomnumbergenerator.h"
 #include "jsonconfig.h"
@@ -61,6 +62,9 @@ void EventDebut::fire(Algorithm *pAlgorithm, State *pState, double t)
 		EventPrePStart *pEvt = new EventPrePStart(pPerson);
 		population.onNewEvent(pEvt);
 	}
+
+	EventHIVTest *pEvtTest = new EventHIVTest(pPerson);
+	population.onNewEvent(pEvtTest);
 }
 
 double EventDebut::m_debutAge = -1;

@@ -1,5 +1,4 @@
 #include "eventdropout.h"
-#include "eventdiagnosis.h"
 #include "configsettings.h"
 #include "configwriter.h"
 #include "configdistributionhelper.h"
@@ -8,6 +7,8 @@
 #include "configfunctions.h"
 #include "util.h"
 #include <iostream>
+
+#include "eventhivtest.h"
 
 using namespace std;
 
@@ -43,9 +44,9 @@ void EventDropout::fire(Algorithm *pAlgorithm, State *pState, double t)
 	// Viral load goes back to the pre-treatment state
 	pPerson->hiv().resetViralLoad(t);
 
-	// HIV diagnosis event must be scheduled again so the person can possibly start treatment again
-	EventDiagnosis *pEvtDiag = new EventDiagnosis(pPerson);
-	population.onNewEvent(pEvtDiag);
+	// HIV testing event must be scheduled again so the person can possibly start treatment again
+	EventHIVTest *pEvt = new EventHIVTest(pPerson);
+	population.onNewEvent(pEvt);
 }
 
 double EventDropout::getNewInternalTimeDifference(GslRandomNumberGenerator *pRndGen, const State *pState)

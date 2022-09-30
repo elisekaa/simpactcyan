@@ -26,6 +26,7 @@ Person_HIV::Person_HIV(Person *pSelf) : m_pSelf(pSelf)
 	m_Vsp = 0;
 	m_VspOriginal = 0;
 	m_VspLowered = false;
+	m_lastTestTime = -1;
 	m_lastTreatmentStartTime = -1;
 	m_treatmentCount = 0;
 

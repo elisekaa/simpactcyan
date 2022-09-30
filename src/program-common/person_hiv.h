@@ -53,6 +53,9 @@ public:
 	void startPreP() 																{ m_isOnPreP = true; }
 	void stopPreP() 																{ m_isOnPreP = false; }
 
+	double getLastTestTime() const { return m_lastTestTime; }
+	void setLastTestTime(double t) { m_lastTestTime = t; }
+
 	double getLastCD4CountAtDiagnosis() const 										{ assert(isInfected()); return m_lastCD4AtDiagnosis; }
 	double getLastCD4CountAtARTStart() const										{ assert(isInfected()); assert(m_VspLowered); return m_lastCD4AtTreatmentStart; }
 
@@ -82,6 +85,8 @@ private:
 	Person *m_pInfectionOrigin;
 	InfectionType m_infectionType;
 	InfectionStage m_infectionStage;
+
+	double m_lastTestTime;
 	int m_diagnoseCount;
 	bool m_aidsDeath;
 	double m_log10SurvTimeOffset;

@@ -2,13 +2,14 @@
 #include "eventmortality.h"
 #include "eventaidsmortality.h"
 #include "eventchronicstage.h"
-#include "eventdiagnosis.h"
 #include "eventdebut.h"
 #include "jsonconfig.h"
 #include "configfunctions.h"
 #include "util.h"
 #include <cmath>
 #include <iostream>
+
+#include "eventhivtest.h"
 
 using namespace std;
 
@@ -110,8 +111,8 @@ void EventHIVTransmission::infectPerson(SimpactPopulation &population, Person *p
 
 		// Once infected, a HIV diagnosis event will be scheduled, which can cause
 		// treatment of the person later on
-		EventDiagnosis *pEvtDiag = new EventDiagnosis(pTarget);
-		population.onNewEvent(pEvtDiag);
+		//EventDiagnosis *pEvtDiag = new EventDiagnosis(pTarget);
+		//population.onNewEvent(pEvtDiag);
 	}
 
 	// Check relationships pTarget is in, and if the partner is not yet infected, schedule

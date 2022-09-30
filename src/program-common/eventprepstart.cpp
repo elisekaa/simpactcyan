@@ -134,47 +134,10 @@ JSONConfig prepStartJSONConfig(R"JSON(
             "depends": null,
             "params": [
                 [ "prepstart.baseline", 0 ],
-                [ "diagnosis.beta", 0 ],
-                [ "diagnosis.t_max", 200 ]
+                [ "prepstart.beta", 0 ],
+                [ "prepstart.t_max", 200 ]
             ],
             "info": [
                 "TODO"
             ]
         })JSON");
-
-/*
-
-#include "gslrandomnumbergenerator.h"
-#include "util.h"
-#include <iostream>
-
-void EventDiagnosis::fire(Algorithm *pAlgorithm, State *pState, double t)
-{
-	// Schedule an initial monitoring event right away! (the 'true' is for 'right away')
-	EventMonitoring *pEvtMonitor = new EventMonitoring(pPerson, true);
-	population.onNewEvent(pEvtMonitor);
-}
-
-
-
-void EventDiagnosis::markOtherAffectedPeople(const PopulationStateInterface &population)
-{
-	Person *pPerson = getPerson(0);
-
-	// Infected partners (who possibly have a diagnosis event, of which
-	// the hazard depends on the number of diagnosed partners), are also
-	// affected!
-	int numRel = pPerson->getNumberOfRelationships();
-
-	pPerson->startRelationshipIteration();
-	for (int i = 0 ; i < numRel ; i++)
-	{
-		double tDummy;
-		Person *pPartner = pPerson->getNextRelationshipPartner(tDummy);
-
-		if (pPartner->hiv().isInfected())
-			population.markAffectedPerson(pPartner);
-	}
-}
- *
- */

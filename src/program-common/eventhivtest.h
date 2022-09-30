@@ -1,6 +1,5 @@
-#ifndef EVENTDIAGNOSIS_H
-
-#define EVENTDIAGNOSIS_H
+#ifndef EVENTHIVTEST_H
+#define EVENTHIVTEST_H
 
 #include "simpactevent.h"
 #include "hazardfunctionexp.h"
@@ -9,10 +8,10 @@ class ConfigSettings;
 class ConfigWriter;
 class ProbabilityDistribution;
 
-class HazardFunctionDiagnosis : public HazardFunctionExp
+class HazardFunctionHIVTest : public HazardFunctionExp
 {
 public:
-	HazardFunctionDiagnosis(Person *pPerson, double baseline, double ageFactor,
+	HazardFunctionHIVTest(Person *pPerson, double baseline, double ageFactor,
 				double genderFactor, double diagPartnersFactor, double numPartnersFactor,
 				double isDiagnosedFactor, double healthSeekingPropensityFactor, double beta,
 				double HSV2factor);
@@ -24,11 +23,11 @@ private:
 	const double m_isDiagnosedFactor, m_healthSeekingPropensityFactor, m_beta, m_HSV2factor;
 };
 
-class EventDiagnosis : public SimpactEvent
+class EventHIVTest : public SimpactEvent
 {
 public:
-	EventDiagnosis(Person *pPerson, bool scheduleImmediately = false);
-	~EventDiagnosis();
+	EventHIVTest(Person *pPerson, bool scheduleImmediately = false);
+	~EventHIVTest();
 
 	std::string getDescription(double tNow) const;
 	void writeLogs(const SimpactPopulation &pop, double tNow) const;
@@ -60,5 +59,5 @@ private:
 	static double s_HSV2factor; 
 };
 
-#endif // EVENTDIAGNOSIS_H
+#endif // EVENTHIVTEST_H
 
