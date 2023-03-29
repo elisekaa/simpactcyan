@@ -5,6 +5,7 @@
 #include "hazardfunction.h"
 #include "person.h"
 #include <cmath>
+#include <limits>
 
 class HazardFunctionFormationSimple : public HazardFunction
 {
@@ -43,7 +44,11 @@ inline double HazardFunctionFormationSimple::getLnB() const
 
 inline double HazardFunctionFormationSimple::getB() const
 {
-	return std::exp(getLnB());
+	double B = std::exp(getLnB());
+	if (isinf(B)) {
+		B = std::numeric_limits<double>::max();
+	}
+	return B;
 }
 
 inline double HazardFunctionFormationSimple::getC() const
