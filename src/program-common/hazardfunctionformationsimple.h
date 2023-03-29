@@ -45,7 +45,7 @@ inline double HazardFunctionFormationSimple::getLnB() const
 inline double HazardFunctionFormationSimple::getB() const
 {
 	double B = std::exp(getLnB());
-	if (isinf(B)) {
+	if (std::isinf(B)) {
 		B = std::numeric_limits<double>::max();
 	}
 	return B;
